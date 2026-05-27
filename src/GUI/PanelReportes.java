@@ -42,7 +42,7 @@ public class PanelReportes extends JPanel {
         add(panelHerramientas);
 
         // Botón 1: MOSTRAR VENTAS (Muestra en textarea)
-        JButton btnMostrarVentas = new JButton("Mostrar ventas");
+        JButton btnMostrarVentas = new JButton("VENTAS");
         try { btnMostrarVentas.setIcon(new ImageIcon(PanelReportes.class.getResource("/icono_historial.png"))); } catch(Exception e){}
         btnMostrarVentas.setBounds(10, 10, 145, 40);
         btnMostrarVentas.setBackground(new Color(20, 25, 40));
@@ -52,7 +52,7 @@ public class PanelReportes extends JPanel {
         panelHerramientas.add(btnMostrarVentas);
 
         // Botón 2: LOG RESTOCK (Muestra en textarea)
-        JButton btnLogRestock = new JButton("Mostrar restock");
+        JButton btnLogRestock = new JButton("RESTOCK");
         try { btnLogRestock.setIcon(new ImageIcon(PanelReportes.class.getResource("/icono_mostrarrestock.png"))); } catch(Exception e){}
         btnLogRestock.setBounds(160, 10, 145, 40);
         btnLogRestock.setBackground(new Color(20, 25, 40));
@@ -62,7 +62,7 @@ public class PanelReportes extends JPanel {
         panelHerramientas.add(btnLogRestock);
 
         // Botón 3: REPORTE X CUENTA (Genera .txt)
-        JButton btnRepCuenta = new JButton("Reporte por ID");
+        JButton btnRepCuenta = new JButton("ID");
         try { btnRepCuenta.setIcon(new ImageIcon(PanelReportes.class.getResource("/icono_reportecliente.png"))); } catch(Exception e){}
         btnRepCuenta.setBounds(310, 10, 145, 40);
         btnRepCuenta.setBackground(new Color(20, 25, 40));
@@ -72,7 +72,7 @@ public class PanelReportes extends JPanel {
         panelHerramientas.add(btnRepCuenta);
 
         // Botón 4: REPORTE X FECHA (Genera .txt)
-        JButton btnRepFecha = new JButton("Reporte por fecha");
+        JButton btnRepFecha = new JButton("FECHA");
         try { btnRepFecha.setIcon(new ImageIcon(PanelReportes.class.getResource("/icono_reportefecha.png"))); } catch(Exception e){}
         btnRepFecha.setBounds(460, 10, 145, 40);
         btnRepFecha.setBackground(new Color(20, 25, 40));
@@ -82,7 +82,7 @@ public class PanelReportes extends JPanel {
         panelHerramientas.add(btnRepFecha);
 
         // Botón 5: REPORTE X PRODUCTO (Genera .txt)
-        JButton btnRepProducto = new JButton("Reporte por producto");
+        JButton btnRepProducto = new JButton("PRODUCTO");
         try { btnRepProducto.setIcon(new ImageIcon(PanelReportes.class.getResource("/icono_reporteprod.png"))); } catch(Exception e){}
         btnRepProducto.setBounds(610, 10, 145, 40);
         btnRepProducto.setBackground(new Color(20, 25, 40));
