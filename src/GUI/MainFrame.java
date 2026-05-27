@@ -247,6 +247,16 @@ public class MainFrame extends JFrame {
 			}
 		});
 
+		btnHistorial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCentral.removeAll();
+				PanelHistorial vistaHistorial = new PanelHistorial(usuarioLogueado);
+				panelCentral.add(vistaHistorial);
+				panelCentral.revalidate();
+				panelCentral.repaint();
+			}
+		});
+
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose(); // Cierra el menú

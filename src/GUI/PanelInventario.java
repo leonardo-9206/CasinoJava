@@ -93,10 +93,12 @@ public class PanelInventario extends JPanel {
                         try {
                             int cantidad = Integer.parseInt(cantStr);
                             String resultado = invManager.hacerRestock(id, cantidad);
-                            
                             if (resultado.startsWith("Error")) {
                                 mostrarError(resultado);
                             } else {
+                                // Registro de log
+                                managers.LogManager.registrarRestock("Sistema", id, cantidad, invManager.buscarProducto(id).getCantidad());
+                                
                                 mostrarMensaje(resultado);
                                 actualizarPantalla(); 
                             }

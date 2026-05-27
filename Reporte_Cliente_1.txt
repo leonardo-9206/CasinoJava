@@ -1,9 +1,0 @@
-=== ESTADO DE CUENTA ===
-Cliente: Tuca
-ID Cuenta: 1
-------------------------
-Fecha: 01/04/2026 | Ticket: 34263A | Monto: $630.0
-  - Cigarros x1 ($80.0)
-  - Hamburguesa x5 ($550.0)
-------------------------
-TOTAL GASTADO: $630.0

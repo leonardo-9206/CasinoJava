@@ -75,8 +75,13 @@ public class PanelVentas extends JPanel {
         btnNuevaVenta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // 1. Pedir ID de cliente
-                String idCliente = solicitarInput("Ingresa el ID del cliente para la venta:");
+                String idCliente = solicitarInput("Ingresa el ID numérico del cliente para la venta:");
                 if (idCliente == null || idCliente.trim().isEmpty()) return;
+
+                if (!idCliente.matches("\\d+")) {
+                    mostrarError("Error: El ID del cliente debe contener únicamente números.");
+                    return;
+                }
 
                 CuentaCliente cuenta = ventasManager.buscarCliente(idCliente);
                 
@@ -88,6 +93,15 @@ public class PanelVentas extends JPanel {
                     
                     cuenta = new CuentaCliente(idCliente, nombre);
                     ventasManager.agregarCliente(cuenta);
+                    
+                    // --- NUEVA LÓGICA DE SINCRONIZACIÓN ---
+                    managers.UsuarioManager uManager = new managers.UsuarioManager();
+                    if (!uManager.existeIdUsuario(idCliente)) {
+                        models.Cliente nuevoUsuarioCliente = new models.Cliente(idCliente, nombre, idCliente); // pass=ID
+                        uManager.agregarUsuario(nuevoUsuarioCliente);
+                        mostrarMensaje("Se ha creado el acceso web/app para '" + nombre + "'. Contraseña temporal: " + idCliente);
+                    }
+
                     actualizarPantalla(); // Actualiza el JTextArea
                 }
 
@@ -97,16 +111,16 @@ public class PanelVentas extends JPanel {
                 // 4. Bucle para agregar productos (while)
                 boolean seguir = true;
                 while (seguir) {
-                    String inputIdProd = solicitarInput("ID del Producto a comprar (o escribe FIN para terminar):");
+                    String inputNombreProd = solicitarInput("Nombre del Producto a comprar (o escribe FIN para terminar):");
                     
-                    if (inputIdProd == null || inputIdProd.equalsIgnoreCase("FIN")) {
+                    if (inputNombreProd == null || inputNombreProd.equalsIgnoreCase("FIN")) {
                         seguir = false;
                         continue;
                     }
 
-                    Producto p = invManager.buscarProducto(inputIdProd);
+                    Producto p = invManager.buscarProductoPorNombre(inputNombreProd);
                     if (p == null) {
-                        mostrarError("No se encontró un producto con esa ID.");
+                        mostrarError("No se encontró un producto con ese nombre.");
                     } else {
                         String inputCant = solicitarInput("¿Cantidad a vender de " + p.getNombre() + "?");
                         if (inputCant != null) {

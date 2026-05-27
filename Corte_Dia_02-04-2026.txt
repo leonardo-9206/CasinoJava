@@ -1,7 +1,0 @@
-=== CORTE DE CAJA ===
-Fecha de Operación: 02/04/2026
-------------------------------------------------------------------
-Venta ID: V-1779857251250 | Cliente: Epstein         | Total: $4250.00
-------------------------------------------------------------------
-Ventas Totales Realizadas: 1
-INGRESOS TOTALES DEL DÍA: $4250.0
