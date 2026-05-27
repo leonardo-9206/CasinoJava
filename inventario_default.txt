@@ -1,0 +1,6 @@
+1,Fichas Bronce,10.0,50,20,500,Fichas,true
+2,Fichas Plata,50.0,50,20,500,Fichas,true
+3,Fichas Oro,100.0,50,20,500,Fichas,true
+4,Cerveza,30.0,80,50,300,Bebidas,true
+5,Cigarros,80.0,30,10,50,Snacks,true
+6,Hamburguesa,110.0,10,5,50,Snacks,true
