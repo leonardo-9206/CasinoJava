@@ -178,7 +178,6 @@ public class MainFrame extends JFrame {
 		if (usuarioLogueado != null) {
 			if (usuarioLogueado.getRol().equals("Empleado")) {
 				btnUsuarios.setVisible(false);
-				btnReportes.setVisible(false);
 				
 			} else if (usuarioLogueado.getRol().equals("Cliente")) {
 				btnPuntoVenta.setVisible(false);
@@ -233,6 +232,16 @@ public class MainFrame extends JFrame {
 				panelCentral.removeAll();
 				PanelReportes vistaReportes = new PanelReportes();
 				panelCentral.add(vistaReportes);
+				panelCentral.revalidate();
+				panelCentral.repaint();
+			}
+		});
+
+		btnUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCentral.removeAll();
+				PanelUsuarios vistaUsuarios = new PanelUsuarios();
+				panelCentral.add(vistaUsuarios);
 				panelCentral.revalidate();
 				panelCentral.repaint();
 			}

@@ -45,7 +45,16 @@ public class UsuarioManager {
 
     public boolean existeUsuario(String nombreUsuario) {
         for (Usuario u : listaUsuarios) {
-            if (u.getNombre().equals(nombreUsuario)) {
+            if (u.getNombre().equalsIgnoreCase(nombreUsuario)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeIdUsuario(String idUsuario) {
+        for (Usuario u : listaUsuarios) {
+            if (u.getIdUsuario().equalsIgnoreCase(idUsuario)) {
                 return true;
             }
         }
@@ -61,6 +70,21 @@ public class UsuarioManager {
             }
         }
         return false;
+    }
+
+    public String obtenerUsuariosTexto() {
+        if (listaUsuarios.isEmpty()) return "No hay usuarios registrados.";
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-15s %-20s %-15s %-15s\n", "ID USUARIO", "NOMBRE", "CONTRASEÑA", "ROL"));
+        sb.append("----------------------------------------------------------------------\n");
+        
+        for (Usuario u : listaUsuarios) {
+            sb.append(String.format("%-15s %-20s %-15s %-15s\n", 
+                u.getIdUsuario(), u.getNombre(), u.getPassword(), u.getRol()));
+        }
+        
+        return sb.toString();
     }
 
     private void guardarDatos() {

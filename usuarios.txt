@@ -1,3 +1,5 @@
-admin,1234,Admin
-Leonardo,321454,Empleado
-Juan,hola,Cliente
+1,admin,1234,Admin
+2,Leonardo,321454,Empleado
+3,David,todosaprueban,Cliente
+4,Tuca,cagajo,Cliente
+5,Epstein,ilovekids,Cliente
