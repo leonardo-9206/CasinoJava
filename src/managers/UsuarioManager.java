@@ -11,17 +11,16 @@ import models.Empleado;
 import models.Cliente;
 
 public class UsuarioManager {
-
     private ArrayList<Usuario> listaUsuarios;
     private final String RUTA_ARCHIVO = "usuarios.txt";
 
+    //constructor del manager
     public UsuarioManager() {
         listaUsuarios = new ArrayList<>();
         cargarDatos();
-
+        //si estuviera vacio por borrar usuarios.txt, se crea un admin por defecto
         if (listaUsuarios.isEmpty()) {
-            // Utilizamos la clase hija "Admin" en lugar de la clase padre
-            Usuario adminPorDefecto = new Admin("U001", "admin", "1234");
+            Usuario adminPorDefecto = new Admin("1", "admin", "1234");
             agregarUsuario(adminPorDefecto);
         }
     }

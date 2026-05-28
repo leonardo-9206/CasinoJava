@@ -1,16 +1,15 @@
 package models;
 
-// Aplicando Herencia: Empleado "es un" Usuario
 public class Empleado extends Usuario {
-
+    //constructor
     public Empleado(String idUsuario, String nombre, String password) {
-        // Llama al constructor de la clase padre (Usuario) y fuerza el rol "Empleado"
+        //llamamos al constructor del padre y fijamos su rol como empleado
         super(idUsuario, nombre, password, "Empleado");
     }
 
-    // Aplicando Polimorfismo: Sobrescribe el método abstracto
+    //mostramos sus permisos en terminal
     @Override
     public String obtenerNivelAcceso() {
-        return "[NIVEL 2] Acceso Parcial: Puede realizar ventas y hacer restock de inventario.";
+        return "Acceso Parcial: Puede realizar ventas y hacer restock de inventario.";
     }
 }

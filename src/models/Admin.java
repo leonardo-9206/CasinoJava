@@ -1,16 +1,15 @@
 package models;
 
-// Aplicando Herencia: Admin "es un" Usuario
 public class Admin extends Usuario {
-
+    //constructor
     public Admin(String idUsuario, String nombre, String password) {
-        // Llama al constructor de la clase padre (Usuario) y fuerza el rol "Admin"
+        //llamamos al constructor de usuario pero fijamos su rol como admin
         super(idUsuario, nombre, password, "Admin");
     }
 
-    // Aplicando Polimorfismo: Sobrescribe el método abstracto
+    //metodo abstracto, solo es para mostrar en terminal sus permisos
     @Override
     public String obtenerNivelAcceso() {
-        return "[NIVEL 1] Acceso Total: Puede registrar, modificar, eliminar, ver reportes y gestionar empleados.";
+        return "Acceso Total: Puede registrar, modificar, eliminar, ver reportes y gestionar empleados.";
     }
 }
