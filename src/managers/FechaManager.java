@@ -19,6 +19,7 @@ public class FechaManager {
 
     private static void cargarFecha() {
         try {
+        	
             BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_FECHA));
             fechaActual = br.readLine();
             br.close();

@@ -35,6 +35,15 @@ public class InventarioManager {
         return null; 
     }
 
+    public Producto buscarProductoPorNombre(String nombreBuscar) {
+        for (Producto p : listaProductos) {
+            if (p.getNombre().equalsIgnoreCase(nombreBuscar)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public boolean eliminarProducto(String idEliminar) {
         Producto p = buscarProducto(idEliminar);
         //si no retorna null, lo encontro
