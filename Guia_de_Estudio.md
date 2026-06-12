@@ -231,3 +231,11 @@ El `serialVersionUID` es como un número de versión para saber si la pantalla c
 
 **P: ¿Cómo ocultan o muestran los botones dependiendo de quién inició sesión?**
 **R:** Gracias a que el Login nos pasó al objeto `Usuario`, hacemos un bloque de validación de roles en el constructor. Si el `.getRol()` dice "Empleado", ocultamos el botón de Usuarios (`btnUsuarios.setVisible(false)`). Si el rol dice "Cliente", ocultamos la tienda entera y solo volvemos visible el botón oculto de `btnHistorial` ("Mis Compras"). Es Seguridad a Nivel de Interfaz.
+
+
+**P: Explícame detalladamente cómo funciona el bloque de código que carga la imagen del diamante en el MainFrame.**
+**R:** Es un proceso de 4 pasos para garantizar que la imagen cargue perfecto incluso al exportar el programa:
+1. `getResource("/diamante.png")`: En lugar de usar una ruta fija (como C:/Users/...), usamos esto para que Java busque la imagen *dentro* del mismo proyecto. Así, cuando exportemos el .jar, la imagen irá incrustada y funcionará en cualquier computadora.
+2. `getScaledInstance(120, -1, Image.SCALE_SMOOTH)`: Le damos un ancho de 120 píxeles. El `-1` le ordena a Java calcular la altura automáticamente para no deformar/estirar el diamante. El `SCALE_SMOOTH` aplica anti-aliasing (suavizado) para que no se vea pixelado.
+3. `new JLabel(new ImageIcon(imgEscalada))`: En Java Swing no existe un componente "JImage". El truco oficial es usar un JLabel (que normalmente es para texto) pero pasándole el ícono en lugar de letras.
+4. **Matemáticas de Centrado (`setBounds(65, 20, 120, 80)`)**: El panel lateral mide 250px de ancho (su centro es 125). La imagen mide 120px de ancho (su mitad es 60). Para centrarla perfectamente restamos: `125 - 60 = 65`. ¡Por eso la coordenada X empieza exactamente en 65!
