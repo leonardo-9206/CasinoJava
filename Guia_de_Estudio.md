@@ -239,3 +239,15 @@ El `serialVersionUID` es como un número de versión para saber si la pantalla c
 2. `getScaledInstance(120, -1, Image.SCALE_SMOOTH)`: Le damos un ancho de 120 píxeles. El `-1` le ordena a Java calcular la altura automáticamente para no deformar/estirar el diamante. El `SCALE_SMOOTH` aplica anti-aliasing (suavizado) para que no se vea pixelado.
 3. `new JLabel(new ImageIcon(imgEscalada))`: En Java Swing no existe un componente "JImage". El truco oficial es usar un JLabel (que normalmente es para texto) pero pasándole el ícono en lugar de letras.
 4. **Matemáticas de Centrado (`setBounds(65, 20, 120, 80)`)**: El panel lateral mide 250px de ancho (su centro es 125). La imagen mide 120px de ancho (su mitad es 60). Para centrarla perfectamente restamos: `125 - 60 = 65`. ¡Por eso la coordenada X empieza exactamente en 65!
+
+
+### 3. Panel de Ventas (PanelVentas.java)
+
+**P: ¿Cómo funciona la lógica para agregar varios productos a un solo ticket de venta sin cerrar la ventana?**
+**R:** Usamos un bucle `while (seguir)` (como si fuera un carrito de compras interactivo). El código lanza un JOptionPane preguntando el nombre del producto. Si el usuario teclea un producto válido, lo añade al objeto `Venta` en memoria RAM y vuelve a lanzar la pregunta. Solo cuando el usuario teclea la palabra "FIN", la variable `seguir` cambia a false, el ciclo se rompe, y entonces sí mandamos el ticket entero al `VentasManager.procesarVenta()` para que lo cobre y descuente del inventario.
+
+**P: Noté que si el cliente no existe, el sistema lo crea. ¿Cómo sincronizan las ventas con los usuarios que inician sesión?**
+**R:** Esta es una de las funciones más avanzadas de la interfaz. Si ingresan un ID que no existe, el sistema crea la `CuentaCliente` (para las compras), pero en la línea 91 **instanciamos al UsuarioManager** desde ahí mismo. Le ordenamos que cree un usuario de tipo `Cliente` en el archivo `usuarios.txt`, asignándole su misma ID como contraseña temporal. ¡Así, el cliente que acaba de comprar su primera cerveza, ya puede ir a su casa, abrir el programa e iniciar sesión para ver su historial!
+
+**P: En el botón de "Corte de Caja", después de avanzar el día, ¿cómo hacen para que la fecha se actualice visualmente en el menú de la izquierda si ese menú está en OTRA clase (MainFrame)?**
+**R:** Usamos la magia de `SwingUtilities.getWindowAncestor(this)`. Como el Panel de Ventas es solo un cuadrito pegado adentro de la ventana principal, este comando le dice a Java: *"Oye, búscame a la ventana gigante que es mi papá"*. Una vez que la encuentra y confirmamos que es el `MainFrame`, llamamos al método público `mainForm.actualizarFecha()`. ¡Es comunicación directa entre paneles de la interfaz gráfica!
