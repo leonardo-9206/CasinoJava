@@ -168,3 +168,26 @@ Finalmente cierra los tres archivos, dejando todo respaldado y listo para recons
 
 **P: En el método escribirLinea() usas `new FileWriter(nombreArchivo, true)`. ¿Para qué es ese 'true'?**
 **R:** Ese parámetro es la clave de todo el LogManager. Por defecto, FileWriter borra el archivo y lo sobrescribe desde cero. Al ponerle `true` (modo Append), le estamos diciendo: "No borres nada, solo ve al final del documento y añade este nuevo renglón". Esto nos permite construir un historial continuo e intocable (Bitácora/Auditoría) de todos los movimientos sospechosos de los empleados.
+
+
+### PROFUNDIZACIÓN: LIBRERÍA java.time (Si el profe te pregunta por código no visto en clase)
+
+**P: En avanzarDia() de FechaManager, usas la librería java.time. Explícame línea por línea qué hace.**
+**R:** Como el profe no enseñó esta librería, esto le va a encantar porque demuestra investigación:
+1. `DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");` 
+   -> Crea una "plantilla" para decirle a Java que nuestro texto está en formato Día/Mes/Año.
+2. `LocalDate fecha = LocalDate.parse(getFechaActual(), formatter);` 
+   -> Agarra el texto (ej. "28/02/2026"), lo pasa por la plantilla, y lo convierte en un "Objeto de Tiempo Real" en Java.
+3. `fecha = fecha.plusDays(1);` 
+   -> ¡Esta es la magia! Como ya es un objeto de tiempo, Java hace las matemáticas. Sabe perfectamente que el siguiente día no es el 29, sino el "01/03/2026" (calcula años bisiestos y fines de mes automáticamente).
+4. `fechaActual = fecha.format(formatter);` 
+   -> Toma ese objeto matemático y lo vuelve a convertir en un simple texto String para poder guardarlo en nuestro bloc de notas.
+
+**P: ¿Y cómo funciona obtenerFechaHora() en LogManager?**
+**R:** Es parecido, pero para el tiempo real:
+1. `LocalDateTime ahora = LocalDateTime.now();` 
+   -> Va y le pregunta directamente a la tarjeta madre de la computadora la fecha y la hora exacta (hasta los milisegundos) en este instante.
+2. `DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");` 
+   -> Crea una plantilla visual de Año-Mes-Día y Horas:Minutos:Segundos.
+3. `return ahora.format(formato);` 
+   -> Convierte esa hora cruda de la computadora en un texto hermoso y legible para pegarlo en nuestra bitácora como evidencia.
