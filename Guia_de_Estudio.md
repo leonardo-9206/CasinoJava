@@ -128,3 +128,18 @@ Si metiéramos todo en un solo archivo, sería imposible mantener el orden de la
 
 **P: ¿Cómo funciona el Corte de Caja?**
 **R:** El método generarCorteCaja(fechaOperativa) recorre TODO el historial de ventas del casino, pero tiene una condicional 'if' que solo deja pasar a las ventas que coincidan con la fecha recibida. Las va sumando y formateando con un StringBuilder. Al final, crea un archivo de texto dinámico cuyo nombre incluye la fecha (ej. Corte_Dia_02-04-2026.txt) para dejar una evidencia física de la auditoría de ese día.
+
+
+**P: Explícame paso a paso cómo funciona el método procesarVenta(Venta nuevaVenta).**
+**R:** Funciona en 4 pasos como una transacción bancaria segura:
+1. Busca al cliente; si no existe, cancela.
+2. BUCLE PREVENTIVO: Recorre todos los productos del ticket e interroga al InventarioManager: "¿Tienes suficiente stock de esto?". Si UN SOLO producto no tiene stock, cancela la venta entera y no cobra nada (evita ventas a medias o stock negativo).
+3. BUCLE DE EJECUCIÓN: Como la verificación pasó limpiamente, vuelve a recorrer los productos y ahora sí, manda la orden oficial de reducir el inventario.
+4. Por último, anexa la venta al historial del cliente y manda a guardar todo a los archivos de texto.
+
+**P: Explícame paso a paso cómo funciona el método guardarDatos() en esta clase.**
+**R:** Se encarga de "aplanar" nuestra estructura 3D (la Matrioska) hacia 3 archivos planos simulando tablas SQL. Utiliza 3 ciclos 'for' anidados:
+- 1er FOR (Clientes): Entra a la lista global. Agarra un cliente y guarda su ID y Nombre en clientes.txt.
+- 2do FOR (Ventas): Estando dentro de ese cliente, saca todos sus tickets de venta. Guarda cada ticket en ventas.txt, pero le pega el ID del cliente al lado para saber que es suyo (Llave Foránea).
+- 3er FOR (Detalles): Estando dentro de ese ticket, saca los productos individuales. Los guarda en detalles_ventas.txt pegándoles el ID de la Venta al lado (Llave Foránea).
+Finalmente cierra los tres archivos, dejando todo respaldado y listo para reconstruirse en el futuro.
