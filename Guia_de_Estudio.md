@@ -59,3 +59,26 @@ Es como una caja dentro de otra caja.
 
 **P: ¿Dónde estamos usando el método mostrarVenta() que tiene puros System.out.println?**
 **R:** En la versión final gráfica, no se usa en ningún lado. Es un método diseñado para "pruebas de unidad por consola" (debugging). Lo utilizamos durante el desarrollo para verificar que la lógica matemática del negocio funcionara correctamente antes de inyectarla en la interfaz gráfica visual.
+
+
+## FASE 2: LOS MOTORES (Managers)
+
+### 1. Manejador de Usuarios (UsuarioManager.java)
+
+**P: ¿Por qué en existeUsuario() usamos equalsIgnoreCase y en eliminarUsuario() usamos equals()?**
+**R:** En existeUsuario() queremos evitar duplicados (no queremos que alguien registre 'admin' y otro 'ADMIN'). Al ignorar mayúsculas, bloqueamos variaciones del mismo nombre. En cambio, eliminarUsuario() es una acción destructiva, por lo que usamos equals() para exigir precisión milimétrica y asegurar que el admin tecleó exactamente a quién quiere borrar.
+
+**P: ¿Cómo funciona StringBuilder y por qué es mejor que usar el signo '+' para unir textos?**
+**R:** En Java los String son inmutables (no se pueden editar). Si usamos '+' para unir a 1,000 usuarios, Java destruye y crea 1,000 objetos nuevos en la memoria RAM, volviendo lento el sistema. StringBuilder funciona como un lienzo en blanco mutable; append() solo pinta más texto al final sin destruir nada. Al final, toString() nos entrega el texto final una sola vez. Es una optimización masiva de memoria.
+
+**P: ¿Qué significa el %-15s en el String.format del StringBuilder?**
+**R:** Funciona exactamente como un printf en C. La 's' significa String (texto). El número '15' significa que queremos que ese texto ocupe un espacio forzoso de 15 caracteres (rellenando con espacios en blanco si sobra espacio). Y el signo '-' significa que queremos que el texto se alinee a la izquierda. Esto nos sirve para crear columnas perfectamente derechas en la interfaz gráfica.
+
+**P: ¿Por qué el método login() no retorna un booleano, sino un objeto Usuario?**
+**R:** Porque la interfaz gráfica (MainFrame) necesita saber *quién* acaba de entrar. Dependiendo del objeto que retorne el login, MainFrame lee su Rol y decide qué botones esconder o mostrar (por ejemplo, ocultar el panel de usuarios a los empleados).
+
+**P: ¿Qué pasa en cargarDatos() si se borra el archivo usuarios.txt por accidente?**
+**R:** El FileReader arrojará un error porque el archivo no existe. Sin embargo, nuestro bloque try-catch captura esa excepción y evita que el programa colapse. Al terminar de cargar, el constructor de UsuarioManager verifica si la lista quedó vacía. Si está vacía, el sistema auto-genera un Usuario Admin por defecto (usuario: admin, pass: 1234) para garantizar que nunca nos quedemos afuera del sistema.
+
+**P: ¿Cómo transforma cargarDatos() el texto del .txt a objetos vivos de Java?**
+**R:** Lee el archivo línea por línea usando BufferedReader. Si la línea no está vacía, usa el método split(",") para romper el texto cada que encuentra una coma, guardando los pedazos en un arreglo (datos[0] es el ID, datos[1] el nombre, etc.). Finalmente, lee la posición del rol, y mediante un if/else, decide si instanciar un objeto de la clase Admin, Empleado o Cliente usando polimorfismo, para luego agregarlo a la lista de usuarios en la RAM.
