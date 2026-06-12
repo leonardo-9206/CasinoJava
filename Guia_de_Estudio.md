@@ -28,3 +28,19 @@ El `serialVersionUID = 1L` es un sello de versión; sirve para que, si en el fut
 
 **P: ¿Y qué hace ese `@Override public String toString()` hasta abajo?**
 **R:** Normalmente, si imprimimos un objeto en Java, imprime su dirección de memoria en la RAM (ej. `Producto@7a81197d`). Al sobreescribir (`@Override`) el método `toString()`, obligamos a Java a ignorar ese comportamiento por defecto y que nos devuelva una cadena de texto ordenada con el nombre, precio y stock, lista para mostrarse directamente en los cuadros de texto de la Interfaz Gráfica.
+
+
+### 3. Las Cuentas y las Ventas (CuentaCliente.java, Venta.java, DetalleVenta.java)
+
+**P: ¿Cómo están conectadas estas tres clases entre sí?**
+**R:** Están conectadas 'en cascada' (Estructuras Relacionales) usando ArrayList. 
+1. Un CuentaCliente tiene una lista de Venta.
+2. Una Venta tiene una lista de DetalleVenta.
+3. Un DetalleVenta guarda 1 objeto Producto y cuántas piezas se vendieron.
+Es como una caja dentro de otra caja.
+
+**P: Veo que en Venta.java hay un método agregarDetalle(). ¿Por qué se calcula el total ahí y no en otro lado?**
+**R:** Porque queremos un *Cálculo Dinámico*. En lugar de tener el total estático y correr el riesgo de que se desactualice si agregamos o quitamos productos de la cuenta, cada vez que agregamos un DetalleVenta, el total de la venta se auto-suma. Así aseguramos que la información financiera siempre sea correcta.
+
+**P: ¿De dónde sale el ID de las ventas nuevas en Venta.java?**
+**R:** En el constructor usamos System.currentTimeMillis(). Como esto da los milisegundos exactos desde 1970, es matemáticamente imposible que dos ventas se registren en el mismo milisegundo exacto, dándonos un Ticket ID 100% único automáticamente sin usar bases de datos complejas.
