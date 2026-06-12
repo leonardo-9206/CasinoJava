@@ -82,3 +82,18 @@ Es como una caja dentro de otra caja.
 
 **P: ¿Cómo transforma cargarDatos() el texto del .txt a objetos vivos de Java?**
 **R:** Lee el archivo línea por línea usando BufferedReader. Si la línea no está vacía, usa el método split(",") para romper el texto cada que encuentra una coma, guardando los pedazos en un arreglo (datos[0] es el ID, datos[1] el nombre, etc.). Finalmente, lee la posición del rol, y mediante un if/else, decide si instanciar un objeto de la clase Admin, Empleado o Cliente usando polimorfismo, para luego agregarlo a la lista de usuarios en la RAM.
+
+
+### 2. Manejador de Inventario (InventarioManager.java)
+
+**P: Si se borra usuarios.txt, el bloque catch crea un Admin y llama a guardarDatos(). ¿Esa función crea el archivo .txt de la nada?**
+**R:** (Nota de UsuarioManager) ¡Sí, exactamente! En Java, la clase FileWriter tiene la instrucción de que, si el archivo que le pides no existe en la carpeta, lo crea desde cero automáticamente antes de empezar a escribir.
+
+**P: ¿Por qué el InventarioManager tiene dos rutas de archivos (inventario.dat y inventario_default.txt)?**
+**R:** Esto es un sistema de persistencia híbrida con respaldo. Nuestro archivo principal es el binario (.dat). Sin embargo, la primera vez que se instala el programa, el .dat no existe. El bloque catch atrapa ese error y recurre al 'inventario_default.txt' como semilla. Lee los productos básicos de ahí, los sube a la memoria RAM, e inmediatamente genera el 'inventario.dat' para usarlo de ahí en adelante.
+
+**P: ¿Cómo funcionan FileInputStream y ObjectInputStream a diferencia de FileReader?**
+**R:** FileReader sirve para leer texto humano, línea por línea, separando por comas. En cambio, FileInputStream y ObjectInputStream leen flujos de bytes puros (información congelada). Con una sola línea de código (lector.readObject()), Java resucita el ArrayList completo con todos los productos adentro, sin necesidad de hacer conversiones manuales.
+
+**P: En eliminarProducto(), ¿por qué solo haces p.setActivo(false) en lugar de borrarlo con listaProductos.remove(p)?**
+**R:** Porque esto es una "Baja Lógica". Si borramos el objeto Producto por completo de la memoria, podríamos corromper el historial de ventas pasadas que hacían referencia a ese producto. Al solo cambiarle la etiqueta a 'inactivo', conservamos la integridad de los datos financieros viejos, pero le damos la señal a la GUI de que ya no lo muestre en la tienda.
