@@ -286,3 +286,10 @@ Si elige el 3, mandamos a llamar a la Baja Lógica (`eliminarProducto()`). Si el
 
 **P: En el ReportesManager usas `try (PrintWriter out = new FileWriter(...))` con paréntesis. ¿Por qué los paréntesis?**
 **R:** Es una técnica moderna de Java llamada **Try-With-Resources**. En versiones viejas de Java, si se te olvidaba poner `out.close()` al final, el archivo se quedaba bloqueado en Windows o causaba fugas de memoria. Al ponerlo entre paréntesis en el `try`, Java garantiza que cerrará el archivo automáticamente en cuanto termine de escribir, incluso si el programa crashea a la mitad.
+
+
+**P: En el código de PanelReportes dice `ReportesManager.generarReportePorFecha(...)`. ¿Cómo es que se usa si nunca hicimos un `new ReportesManager()`?**
+**R:** ¡Esa es la magia de los métodos estáticos (`static`)! 
+A diferencia del `InventarioManager` donde sí teníamos que instanciarlo (`invManager = new InventarioManager()`) para que cobrara vida en la memoria, el `ReportesManager` funciona como una "Clase Utilitaria".
+Al ponerle la palabra `static` a sus métodos en el código fuente, le dijimos a Java: *"Este método es una herramienta pública universal"*. 
+Es como una calculadora que siempre está pegada en la pared del casino: cualquier empleado (cualquier Panel) puede llegar, meterle números y obtener un resultado, sin tener que construir su propia calculadora privada (`new`). Por eso podemos llamarlo directamente usando su Nombre en mayúscula: `ReportesManager.metodo()`.
