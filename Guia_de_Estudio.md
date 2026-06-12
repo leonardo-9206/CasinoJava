@@ -151,3 +151,20 @@ Finalmente cierra los tres archivos, dejando todo respaldado y listo para recons
 2. **Fase Ventas:** Lee `ventas.txt`. Por cada renglón, saca el ID del cliente que compró, busca la cuenta en la RAM (usando `buscarCliente()`) y le inserta el Ticket de Venta. Hasta este punto, los tickets existen pero están vacíos por dentro (sin productos).
 3. **Fase Detalles:** Lee `detalles_ventas.txt`. Saca el ID del Producto y el ID de la Venta. Primero, va al InventarioManager a buscar el objeto del producto físico. Luego, usa la función `buscarVentaGlobal()` para escanear a tooooodos los clientes hasta encontrar exactamente el ticket con ese ID. Finalmente, le inyecta el producto y la cantidad a ese ticket. 
 ¡Y así la "Matrioska" queda armada perfectamente igual a como estaba antes de cerrar el programa!
+
+
+### 4. Manejador de Fecha (FechaManager.java)
+
+**P: ¿Por qué necesitamos un FechaManager en lugar de solo leer el reloj de la computadora?**
+**R:** Porque necesitamos simular el paso del tiempo a nuestra voluntad. Si usáramos el reloj real de la compu, tendríamos que esperar 24 horas reales para probar si el "Corte de Caja Diario" funciona. Al tener un archivo `fecha_sistema.txt`, el administrador puede "avanzar el día" con un botón para hacer pruebas de reportes financieros del mes completo en 5 minutos.
+
+**P: ¿Cómo avanza el día matemáticamente en Java?**
+**R:** Toma el texto (ej. "01/04/2026") y usa un DateTimeFormatter para convertirlo a un objeto `LocalDate` real. Al ser un objeto de fecha, podemos invocar `.plusDays(1)` para que Java haga la matemática (sabe cuántos días tiene cada mes y años bisiestos). Luego lo vuelve a convertir a texto y lo guarda.
+
+**P: ¿Por qué todos sus métodos y variables tienen la palabra `static`?**
+**R:** Porque la fecha es una 'Verdad Universal' para todo el Casino. No necesitamos instanciar `new FechaManager()` múltiples veces. Al hacerlo `static`, la fecha vive globalmente en la memoria y cualquier parte del código puede preguntar qué día es simplemente llamando a `FechaManager.getFechaActual()`.
+
+### 5. Manejador de Bitácoras (LogManager.java)
+
+**P: En el método escribirLinea() usas `new FileWriter(nombreArchivo, true)`. ¿Para qué es ese 'true'?**
+**R:** Ese parámetro es la clave de todo el LogManager. Por defecto, FileWriter borra el archivo y lo sobrescribe desde cero. Al ponerle `true` (modo Append), le estamos diciendo: "No borres nada, solo ve al final del documento y añade este nuevo renglón". Esto nos permite construir un historial continuo e intocable (Bitácora/Auditoría) de todos los movimientos sospechosos de los empleados.
