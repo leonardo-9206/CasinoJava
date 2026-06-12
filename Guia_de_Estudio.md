@@ -214,3 +214,20 @@ Si el login es exitoso y retorna al Usuario, hacemos dos cosas clave:
 **P: ¿Qué significa la línea `private static final long serialVersionUID = 1L;` al inicio de las pantallas? ¿Tiene que ver con los IDs de las ventas?**
 **R:** ¡No, no tiene nada que ver con los tickets del casino! Es un código interno de Java. Resulta que todas las pantallas visuales (JFrame, JPanel) heredan automáticamente la capacidad de ser "Serializables" (como nuestro Producto.dat). 
 El `serialVersionUID` es como un número de versión para saber si la pantalla cambió. Eclipse te autogenera esta línea para quitar un warning de código. El "1L" solo significa "Versión 1, de tipo Long". En nuestro programa jamás guardamos las pantallas visuales en el disco duro, así que está ahí solamente para mantener contento al compilador de Eclipse.
+
+
+### 2. El Menú Principal (MainFrame.java)
+
+**P: ¿Cómo lograron hacer que el menú de la izquierda siempre se quede fijo y solo cambie la parte de la derecha?**
+**R:** Usamos la técnica de "Sustitución de Paneles" (Panel Swapping) en lugar de crear muchas ventanas nuevas. 
+1. Dividimos el `MainFrame` en dos rectángulos estáticos: `panelMenu` a la izquierda (250px de ancho) y `panelCentral` a la derecha (800px de ancho).
+2. Cuando el usuario da clic en un botón (ej. Inventario), el código ejecuta tres pasos mágicos sobre el panel de la derecha:
+   - `panelCentral.removeAll();` -> Borra todo lo que haya en la pizarra de la derecha.
+   - `panelCentral.add(new PanelInventario());` -> Pega la nueva pantalla en la pizarra vacía.
+   - `panelCentral.revalidate();` y `panelCentral.repaint();` -> Le grita a la tarjeta gráfica que redibuje ese lado derecho para que los cambios sean visibles. ¡Y el menú de la izquierda ni se entera de lo que pasó!
+
+**P: ¿Por qué usaron `setFocusPainted(false)` y `setBorderPainted(false)` en los botones del menú?**
+**R:** Porque por defecto, los botones de Java se ven como botones viejos de Windows 95 (tienen un borde grueso 3D y un cuadro punteado feo cuando les das clic). Al poner esas dos opciones en 'false', le quitamos el borde y la sombra de clic. Luego usamos `EmptyBorder` para darles un margen izquierdo (padding), logrando que se vean planos, modernos y estilizados, como el menú lateral de una página web moderna.
+
+**P: ¿Cómo ocultan o muestran los botones dependiendo de quién inició sesión?**
+**R:** Gracias a que el Login nos pasó al objeto `Usuario`, hacemos un bloque de validación de roles en el constructor. Si el `.getRol()` dice "Empleado", ocultamos el botón de Usuarios (`btnUsuarios.setVisible(false)`). Si el rol dice "Cliente", ocultamos la tienda entera y solo volvemos visible el botón oculto de `btnHistorial` ("Mis Compras"). Es Seguridad a Nivel de Interfaz.
