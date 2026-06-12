@@ -259,3 +259,16 @@ Para que nuestros pop-ups (JOptionPane) se vieran profesionales, queríamos inye
 Si lo copiábamos y pegábamos cada vez que queríamos mostrar un mensaje, el archivo tendría miles de líneas de basura. Al "encapsular" ese código espantoso dentro de estas tres funcioncitas privadas, logramos dos cosas:
 1. **Código Limpio:** En lugar de escribir 5 líneas, solo escribimos `mostrarError("Stock insuficiente");` y listo.
 2. **Mantenibilidad:** Si el día de mañana queremos cambiar el diamante por una estrella dorada, solo tenemos que cambiar el nombre del archivo `.png` en ESTAS 3 funciones, y automáticamente los 50 pop-ups del sistema se actualizarán solos.
+
+
+### 4. Panel de Inventario (PanelInventario.java)
+
+**P: ¿Para qué usas el método privado `crearBotonHerramienta` en esta clase?**
+**R:** Es otra aplicación del principio **DRY (Don't Repeat Yourself)**. Como tenemos 4 botones arriba (Buscar, Restock, Nuevo, Editar) que comparten el mismo estilo visual (fondo oscuro, letra blanca, sin bordes feos), en lugar de copiar y pegar 8 líneas de configuración para cada botón, hicimos una "fábrica de botones". Le pasamos el texto, el ícono y la posición X, y la función nos devuelve un botón perfecto y estilizado, ahorrándonos 30 líneas de código sucio.
+
+**P: ¿En qué momento se conecta la interfaz con la Bitácora de Auditoría (LogManager)?**
+**R:** Específicamente en el botón de **RESTOCK**. Cuando el usuario ingresa cuántas unidades llegaron al almacén, llamamos a `invManager.hacerRestock()`. Si eso resulta exitoso, inmediatamente llamamos a `managers.LogManager.registrarRestock("Sistema", id, cantidad...)`. Así es como cada click de "agregar mercancía" en la interfaz queda grabado para siempre en el archivo de texto de auditoría, evitando robos.
+
+**P: En el botón EDITAR, usas un `showOptionDialog` que devuelve un número entero (`seleccion == 3`). ¿Qué está pasando ahí?**
+**R:** En lugar de hacer que el usuario escriba a mano qué quiere editar, usamos `showOptionDialog` para mostrarle 4 botones visuales: `[Nombre] [Precio] [Máximo] [Eliminar]`. Java nos devuelve el índice del botón que clickeó (0, 1, 2 o 3). 
+Si elige el 3, mandamos a llamar a la Baja Lógica (`eliminarProducto()`). Si elige otro, mapeamos ese índice con los números reales que espera el `InventarioManager` usando un operador ternario: `int campoReal = (seleccion == 0) ? 1 : ...` y ejecutamos la modificación. Es una forma de darle al usuario una experiencia gráfica y traducirla a números matemáticos para el back-end.
