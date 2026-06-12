@@ -44,3 +44,18 @@ Es como una caja dentro de otra caja.
 
 **P: ¿De dónde sale el ID de las ventas nuevas en Venta.java?**
 **R:** En el constructor usamos System.currentTimeMillis(). Como esto da los milisegundos exactos desde 1970, es matemáticamente imposible que dos ventas se registren en el mismo milisegundo exacto, dándonos un Ticket ID 100% único automáticamente sin usar bases de datos complejas.
+
+
+### PREGUNTAS CLAVE ADICIONALES SOBRE MODELOS
+
+**P: ¿Para qué sirve y qué retorna getHistorialVentas() en CuentaCliente?**
+**R:** Retorna toda la caja entera, es decir, el objeto ArrayList<Venta> crudo. Lo usamos en PanelHistorial.java para hacer un ciclo for y pintar ticket por ticket en la pantalla del cliente. También lo usa ReportesManager para cruzar datos financieros.
+
+**P: En Venta.java, ¿por qué hay un constructor que genera el ID con System.currentTimeMillis() y tiene el comentario "para que no explote la GUI"?**
+**R:** Porque hay dos constructores: el normal lo usamos cuando leemos ventas viejas de ventas.txt (que ya traen ID). El de milisegundos lo usa la interfaz gráfica al hacer una venta nueva. Si obligáramos a la GUI o al empleado a inventar un ID único manualmente cada vez, el programa colapsaría si ingresan uno repetido. Usar milisegundos automatiza esto y nos da un ID 100% único sin usar bases de datos complejas.
+
+**P: ¿Qué retorna getDetalles() en Venta.java?**
+**R:** Retorna un ArrayList<DetalleVenta>. Siguiendo la analogía de la caja dentro de otra caja: te abre la venta y te entrega la lista exacta de qué productos se llevó el cliente y cuántas piezas. Se usa en VentasManager para descontar esas piezas del inventario real.
+
+**P: ¿Dónde estamos usando el método mostrarVenta() que tiene puros System.out.println?**
+**R:** En la versión final gráfica, no se usa en ningún lado. Es un método diseñado para "pruebas de unidad por consola" (debugging). Lo utilizamos durante el desarrollo para verificar que la lógica matemática del negocio funcionara correctamente antes de inyectarla en la interfaz gráfica visual.
