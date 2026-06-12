@@ -106,3 +106,25 @@ Es como una caja dentro de otra caja.
 3. El Manager recibe la petición, busca el producto, y mediante un 'switch (opcionCampo)' sabe qué atributo editar.
 4. Aquí entra el try-catch: Si eligieron cambiar el precio (opción 2), el Manager intenta convertir el texto "50.50" a un decimal real usando Double.parseDouble().
 5. Si el usuario se equivocó y tecleó "Cincuenta" en el JOptionPane, la conversión explota. El catch captura la explosión, evita que el programa se cierre, y retorna 'false', dándole la señal a la GUI de que muestre un mensaje de "Error: Ingresaste letras en vez de números".
+
+
+### 3. Manejador de Ventas (VentasManager.java)
+
+**P: En el constructor recibes el InventarioManager. ¿Por qué haces eso y cómo se llama este concepto?**
+**R:** Esto se llama "Inyección de Dependencias". VentasManager no sabe leer archivos binarios ni sabe de existencias, su única responsabilidad son las ventas. Al inyectarle el InventarioManager en el constructor, le damos un puente de comunicación. Así, cuando va a procesar una venta, usa inventarioRef.reducirStock() delegando la responsabilidad y manteniendo un bajo acoplamiento.
+
+**P: Veo que en guardarDatos() usas TRES archivos .txt distintos (clientes, ventas, detalles). ¿Por qué no guardas todo en uno solo?**
+**R:** Porque implementamos un diseño que simula una Base de Datos Relacional (como SQL). 
+- 'clientes.txt' guarda las cuentas.
+- 'ventas.txt' guarda los tickets y usa el ID del cliente como Llave Foránea para saber de quién es.
+- 'detalles_ventas.txt' guarda los productos y usa el ID de la Venta como Llave Foránea. 
+Si metiéramos todo en un solo archivo, sería imposible mantener el orden de la "matrioska".
+
+**P: Entonces, ¿cómo reconstruyes todo en cargarDatos() al abrir el programa?**
+**R:** Hacemos una especie de 'SQL JOIN' manual. 
+1. Primero leemos clientes y creamos las cuentas vacías.
+2. Luego leemos las ventas, buscamos a qué cuenta pertenecen mediante el ID, y se las metemos vacías.
+3. Al final leemos los detalles, buscamos la venta global que tenga ese mismo ID, buscamos el Producto en el InventarioManager, y rellenamos el detalle. ¡Es un rompecabezas perfecto!
+
+**P: ¿Cómo funciona el Corte de Caja?**
+**R:** El método generarCorteCaja(fechaOperativa) recorre TODO el historial de ventas del casino, pero tiene una condicional 'if' que solo deja pasar a las ventas que coincidan con la fecha recibida. Las va sumando y formateando con un StringBuilder. Al final, crea un archivo de texto dinámico cuyo nombre incluye la fecha (ej. Corte_Dia_02-04-2026.txt) para dejar una evidencia física de la auditoría de ese día.
