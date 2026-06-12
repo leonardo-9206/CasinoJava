@@ -272,3 +272,17 @@ Si lo copiábamos y pegábamos cada vez que queríamos mostrar un mensaje, el ar
 **P: En el botón EDITAR, usas un `showOptionDialog` que devuelve un número entero (`seleccion == 3`). ¿Qué está pasando ahí?**
 **R:** En lugar de hacer que el usuario escriba a mano qué quiere editar, usamos `showOptionDialog` para mostrarle 4 botones visuales: `[Nombre] [Precio] [Máximo] [Eliminar]`. Java nos devuelve el índice del botón que clickeó (0, 1, 2 o 3). 
 Si elige el 3, mandamos a llamar a la Baja Lógica (`eliminarProducto()`). Si elige otro, mapeamos ese índice con los números reales que espera el `InventarioManager` usando un operador ternario: `int campoReal = (seleccion == 0) ? 1 : ...` y ejecutamos la modificación. Es una forma de darle al usuario una experiencia gráfica y traducirla a números matemáticos para el back-end.
+
+
+### 5. Panel de Reportes (PanelReportes.java y ReportesManager.java)
+
+**P: Tienes 5 botones en este panel. ¿Hacen lo mismo?**
+**R:** No, están divididos en dos categorías lógicas:
+- **Botones de Lectura Rápida (Ventas y Restock):** Estos dos botones solo jalan información del sistema y la pintan adentro del `JTextArea` negro en la pantalla. No crean ningún archivo nuevo.
+- **Botones de Generación Física (ID, Fecha, Producto):** Estos tres botones hablan con el `ReportesManager` para crear **archivos .txt físicos** en el disco duro (ej. `Reporte_Fecha_12-05.txt`). Solo muestran un pop-up confirmando la ruta donde se guardó.
+
+**P: Cuando generas el reporte por fecha, llamas a `ReportesManager.generarReportePorFecha(ventasManager, fecha)`. ¿Por qué le pasas el ventasManager como parámetro?**
+**R:** ¡Eso se llama **Inyección de Dependencias**! El `ReportesManager` es estático y no tiene datos propios. Si no le pasáramos el `ventasManager`, tendría que volver a abrir `ventas.txt`, leerlo, y volver a armar toda la Matrioska desde el disco duro (lo cual haría lento el programa). Al inyectarle nuestro `ventasManager` (que ya tiene todo cargado en la memoria RAM), el reporte se genera a la velocidad de la luz.
+
+**P: En el ReportesManager usas `try (PrintWriter out = new FileWriter(...))` con paréntesis. ¿Por qué los paréntesis?**
+**R:** Es una técnica moderna de Java llamada **Try-With-Resources**. En versiones viejas de Java, si se te olvidaba poner `out.close()` al final, el archivo se quedaba bloqueado en Windows o causaba fugas de memoria. Al ponerlo entre paréntesis en el `try`, Java garantiza que cerrará el archivo automáticamente en cuanto termine de escribir, incluso si el programa crashea a la mitad.
