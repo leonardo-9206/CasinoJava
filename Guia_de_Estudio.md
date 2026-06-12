@@ -143,3 +143,11 @@ Si metiéramos todo en un solo archivo, sería imposible mantener el orden de la
 - 2do FOR (Ventas): Estando dentro de ese cliente, saca todos sus tickets de venta. Guarda cada ticket en ventas.txt, pero le pega el ID del cliente al lado para saber que es suyo (Llave Foránea).
 - 3er FOR (Detalles): Estando dentro de ese ticket, saca los productos individuales. Los guarda en detalles_ventas.txt pegándoles el ID de la Venta al lado (Llave Foránea).
 Finalmente cierra los tres archivos, dejando todo respaldado y listo para reconstruirse en el futuro.
+
+
+**P: ¿Cómo funciona el método cargarDatos() para reconstruir la información al abrir el programa?**
+**R:** Funciona exactamente como armar un rompecabezas en 3 fases obligatorias (de lo más general a lo más específico):
+1. **Fase Clientes:** Lee `clientes.txt` y crea todas las cuentas vacías en la memoria RAM (solo con su ID y Nombre).
+2. **Fase Ventas:** Lee `ventas.txt`. Por cada renglón, saca el ID del cliente que compró, busca la cuenta en la RAM (usando `buscarCliente()`) y le inserta el Ticket de Venta. Hasta este punto, los tickets existen pero están vacíos por dentro (sin productos).
+3. **Fase Detalles:** Lee `detalles_ventas.txt`. Saca el ID del Producto y el ID de la Venta. Primero, va al InventarioManager a buscar el objeto del producto físico. Luego, usa la función `buscarVentaGlobal()` para escanear a tooooodos los clientes hasta encontrar exactamente el ticket con ese ID. Finalmente, le inyecta el producto y la cantidad a ese ticket. 
+¡Y así la "Matrioska" queda armada perfectamente igual a como estaba antes de cerrar el programa!
