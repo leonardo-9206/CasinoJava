@@ -293,3 +293,21 @@ Si elige el 3, mandamos a llamar a la Baja Lógica (`eliminarProducto()`). Si el
 A diferencia del `InventarioManager` donde sí teníamos que instanciarlo (`invManager = new InventarioManager()`) para que cobrara vida en la memoria, el `ReportesManager` funciona como una "Clase Utilitaria".
 Al ponerle la palabra `static` a sus métodos en el código fuente, le dijimos a Java: *"Este método es una herramienta pública universal"*. 
 Es como una calculadora que siempre está pegada en la pared del casino: cualquier empleado (cualquier Panel) puede llegar, meterle números y obtener un resultado, sin tener que construir su propia calculadora privada (`new`). Por eso podemos llamarlo directamente usando su Nombre en mayúscula: `ReportesManager.metodo()`.
+
+
+### 6. Panel de Usuarios (PanelUsuarios.java)
+
+**P: Al añadir un usuario, ¿cómo decides de qué tipo va a ser si el Manager solo recibe objetos de la clase padre 'Usuario'?**
+**R:** ¡Aplicando **Polimorfismo**! Le mostramos al administrador un menú desplegable con `showOptionDialog` que dice "Admin, Empleado, Cliente". 
+Dependiendo de la palabra que elija, instanciamos a la clase hija correspondiente (`new Admin()`, `new Empleado()` o `new Cliente()`), pero la guardamos dentro de la variable padre `Usuario nuevoUsuario`. Esto nos permite usar el método unificado `usuarioManager.agregarUsuario(nuevoUsuario)` sin importar qué tipo de hijo sea. ¡Pura Programación Orientada a Objetos!
+
+**P: ¿Qué pasa si el dueño del casino accidentalmente intenta borrar al administrador principal?**
+**R:** El sistema tiene un candado lógico. Pusimos un `if (nombre.equals("admin"))` justo antes de intentar borrar. Si coincide, aborta la operación y lanza un error. Esto evita que el sistema se quede sin acceso ("Locked out") por un error humano.
+
+### 7. Panel de Historial (PanelHistorial.java)
+
+**P: ¿Cómo aseguras que el Cliente A no pueda ver las compras del Cliente B?**
+**R:** Porque alteramos el constructor del panel. En lugar de hacer un `new PanelHistorial()` vacío, obligamos a que reciba `(Usuario usuarioActual)`. Así, desde el momento en que se dibuja el panel, ya tiene atrapado el ID de la persona que inició sesión. Luego solo usamos `ventasManager.buscarCliente(usuarioActual.getIdUsuario())` y pintamos única y exclusivamente el historial de esa cuenta.
+
+**P: ¿Cómo lograste que el ticket en pantalla se viera tan alineado y bonito como un ticket real?**
+**R:** Usando `String.format(" - %-20s x%-5d $%.2f", ...)`. El `%s` es para strings, `%d` para enteros y `%.2f` fuerza los decimales a solo mostrar 2 dígitos (ej. $15.50). Los números negativos como `%-20` empujan el texto a la izquierda, creando columnas visuales perfectas dentro del `JTextArea`.
