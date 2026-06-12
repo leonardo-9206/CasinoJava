@@ -209,3 +209,8 @@ Si la respuesta es nula, saca un `JOptionPane.showMessageDialog` de error.
 Si el login es exitoso y retorna al Usuario, hacemos dos cosas clave:
 1. Llamamos a `dispose()`. Esto destruye la ventana del Login actual de la memoria RAM para no gastar recursos.
 2. Llamamos a `MainFrame menu = new MainFrame(usuarioLogueado);` pasándole el usuario que acaba de entrar. El MainFrame atrapa ese objeto y se dibuja a sí mismo, y finalmente le damos `menu.setVisible(true)`.
+
+
+**P: ¿Qué significa la línea `private static final long serialVersionUID = 1L;` al inicio de las pantallas? ¿Tiene que ver con los IDs de las ventas?**
+**R:** ¡No, no tiene nada que ver con los tickets del casino! Es un código interno de Java. Resulta que todas las pantallas visuales (JFrame, JPanel) heredan automáticamente la capacidad de ser "Serializables" (como nuestro Producto.dat). 
+El `serialVersionUID` es como un número de versión para saber si la pantalla cambió. Eclipse te autogenera esta línea para quitar un warning de código. El "1L" solo significa "Versión 1, de tipo Long". En nuestro programa jamás guardamos las pantallas visuales en el disco duro, así que está ahí solamente para mantener contento al compilador de Eclipse.
