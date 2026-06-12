@@ -191,3 +191,21 @@ Finalmente cierra los tres archivos, dejando todo respaldado y listo para recons
    -> Crea una plantilla visual de Año-Mes-Día y Horas:Minutos:Segundos.
 3. `return ahora.format(formato);` 
    -> Convierte esa hora cruda de la computadora en un texto hermoso y legible para pegarlo en nuestra bitácora como evidencia.
+
+
+## FASE 3: LA INTERFAZ GRÁFICA (GUI)
+
+### 1. Pantalla de Inicio de Sesión (Login.java)
+
+**P: ¿Cómo lograste poner la imagen del diamante y por qué usaste ese "-1" en la altura?**
+**R:** Usé la clase `ImageIcon` junto con `Image.getScaledInstance()`. Le pasé como ancho 216 píxeles, pero de altura le pasé "-1". Ese menos uno le dice a Java: *"Calcula la altura automáticamente para mantener la proporción matemática de la imagen"*. Así evitamos que el diamante se vea apachurrado o estirado. Además le puse `Image.SCALE_SMOOTH` para aplicarle anti-aliasing y que los bordes no se vean pixelados, dándole un toque premium.
+
+**P: ¿Por qué en la contraseña usas `new String(txtContraseña.getPassword())` en lugar de un simple `.getText()`?**
+**R:** Porque `JPasswordField` por seguridad en Java no te devuelve un texto normal, te devuelve un arreglo de caracteres (`char[]`). Esto es para que los hackers no puedan robar la contraseña de la memoria RAM tan fácil. Al pasarlo por `new String(...)` lo ensamblamos nosotros de forma segura justo antes de enviarlo al manager.
+
+**P: ¿Cómo se conecta el botón "Iniciar Sesión" con el UsuarioManager y cómo cambias de pantalla?**
+**R:** El botón tiene un `ActionListener`. Cuando le das clic, captura los textos y llama a `usuarioManager.login(usr, pass)`. 
+Si la respuesta es nula, saca un `JOptionPane.showMessageDialog` de error. 
+Si el login es exitoso y retorna al Usuario, hacemos dos cosas clave:
+1. Llamamos a `dispose()`. Esto destruye la ventana del Login actual de la memoria RAM para no gastar recursos.
+2. Llamamos a `MainFrame menu = new MainFrame(usuarioLogueado);` pasándole el usuario que acaba de entrar. El MainFrame atrapa ese objeto y se dibuja a sí mismo, y finalmente le damos `menu.setVisible(true)`.
