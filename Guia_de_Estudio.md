@@ -97,3 +97,12 @@ Es como una caja dentro de otra caja.
 
 **P: En eliminarProducto(), ¿por qué solo haces p.setActivo(false) en lugar de borrarlo con listaProductos.remove(p)?**
 **R:** Porque esto es una "Baja Lógica". Si borramos el objeto Producto por completo de la memoria, podríamos corromper el historial de ventas pasadas que hacían referencia a ese producto. Al solo cambiarle la etiqueta a 'inactivo', conservamos la integridad de los datos financieros viejos, pero le damos la señal a la GUI de que ya no lo muestre en la tienda.
+
+
+**P: ¿Cómo se integra el método modificarProducto(String id, int opcionCampo, String nuevoValor) con los JOptionPane de la GUI?**
+**R:** Funciona como un "traductor y validador" entre la interfaz y el disco duro. 
+1. La Interfaz Gráfica (PanelInventario) usa ventanas emergentes (JOptionPane) para preguntarle al usuario tres cosas: el ID del producto, QUÉ quiere cambiar (ej. 1=Nombre, 2=Precio), y el NUEVO VALOR.
+2. Todo lo que el usuario teclea en un JOptionPane llega como Texto (String), incluso si tecleó "50.50". La GUI le avienta esos datos crudos al Manager.
+3. El Manager recibe la petición, busca el producto, y mediante un 'switch (opcionCampo)' sabe qué atributo editar.
+4. Aquí entra el try-catch: Si eligieron cambiar el precio (opción 2), el Manager intenta convertir el texto "50.50" a un decimal real usando Double.parseDouble().
+5. Si el usuario se equivocó y tecleó "Cincuenta" en el JOptionPane, la conversión explota. El catch captura la explosión, evita que el programa se cierre, y retorna 'false', dándole la señal a la GUI de que muestre un mensaje de "Error: Ingresaste letras en vez de números".
