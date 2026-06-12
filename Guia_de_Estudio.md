@@ -251,3 +251,11 @@ El `serialVersionUID` es como un número de versión para saber si la pantalla c
 
 **P: En el botón de "Corte de Caja", después de avanzar el día, ¿cómo hacen para que la fecha se actualice visualmente en el menú de la izquierda si ese menú está en OTRA clase (MainFrame)?**
 **R:** Usamos la magia de `SwingUtilities.getWindowAncestor(this)`. Como el Panel de Ventas es solo un cuadrito pegado adentro de la ventana principal, este comando le dice a Java: *"Oye, búscame a la ventana gigante que es mi papá"*. Una vez que la encuentra y confirmamos que es el `MainFrame`, llamamos al método público `mainForm.actualizarFecha()`. ¡Es comunicación directa entre paneles de la interfaz gráfica!
+
+
+**P: ¿Para qué sirven los métodos privados como solicitarInput(), mostrarMensaje() y mostrarError() que están al final de varios paneles?**
+**R:** Sirven para aplicar el principio de diseño "DRY" (Don't Repeat Yourself - No te repitas). 
+Para que nuestros pop-ups (JOptionPane) se vieran profesionales, queríamos inyectarles el logo del diamante chiquito (32x32px). El problema es que el código para invocar, escalar y aplicar esa imagen es larguísimo. 
+Si lo copiábamos y pegábamos cada vez que queríamos mostrar un mensaje, el archivo tendría miles de líneas de basura. Al "encapsular" ese código espantoso dentro de estas tres funcioncitas privadas, logramos dos cosas:
+1. **Código Limpio:** En lugar de escribir 5 líneas, solo escribimos `mostrarError("Stock insuficiente");` y listo.
+2. **Mantenibilidad:** Si el día de mañana queremos cambiar el diamante por una estrella dorada, solo tenemos que cambiar el nombre del archivo `.png` en ESTAS 3 funciones, y automáticamente los 50 pop-ups del sistema se actualizarán solos.
